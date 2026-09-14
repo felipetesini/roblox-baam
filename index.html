@@ -133,7 +133,7 @@
             font-size: 1.2rem;
             color: #aaa;
             margin-bottom: 30px;
-            display: none; /* Escondido até revelar */
+            display: none;
         }
 
         .btn {
@@ -167,6 +167,13 @@
             margin: 0 0 20px 0;
             transform: rotate(-5deg);
         }
+
+        .baam-loss {
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -189,7 +196,6 @@
     </div>
 
     <script>
-        // Banco de perguntas sobre Roblox (19 perguntas)
         const questions = [
             { q: "Quem são os criadores originais do Roblox?", a: "David Baszucki e Erik Cassel", pts: 15 },
             { q: "Qual o nome da moeda virtual oficial do jogo?", a: "Robux", pts: 5 },
@@ -212,13 +218,13 @@
             { q: "Qual era a antiga moeda gratuita do Roblox antes de ser removida?", a: "Tix (Tickets)", pts: 20 }
         ];
 
-        // Cria array do jogo com as 19 perguntas + 6 BAAMs
         let gameDeck = [...questions];
         for (let i = 0; i < 6; i++) {
-            gameDeck.push({ type: 'baam' });
+            // Sorteia o valor da perda entre 3 e 10 pontos para cada carta BAAM
+            let randomLoss = Math.floor(Math.random() * 8) + 3;
+            gameDeck.push({ type: 'baam', loss: randomLoss });
         }
 
-        // Função para embaralhar os cards (Algoritmo Fisher-Yates)
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -235,7 +241,6 @@
         const modAnswer = document.getElementById('modal-answer');
         const btnReveal = document.getElementById('btn-reveal');
 
-        // Renderizar Cards
         for (let i = 0; i < 25; i++) {
             let card = document.createElement('div');
             card.classList.add('card');
@@ -258,7 +263,7 @@
             if (data.type === 'baam') {
                 modalBox.classList.add('baam-style');
                 modPoints.innerText = "";
-                modQuestion.innerHTML = "<h2 class='baam-title'>BAAM!</h2><p>Péssimas notícias! Sua equipe acabou de perder os pontos dessa rodada!</p>";
+                modQuestion.innerHTML = `<h2 class='baam-title'>BAAM!</h2><p>Péssimas notícias!</p><div class='baam-loss'>Sua equipe perdeu ${data.loss} pontos!</div>`;
                 btnReveal.style.display = 'none';
             } else {
                 modalBox.classList.remove('baam-style');
